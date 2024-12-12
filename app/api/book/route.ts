@@ -1,4 +1,3 @@
-import mongoose, { Schema, Model, Types } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 import Book from "@/app/lib/models/bookSchema";
 import connect from "@/app/lib/db/mongoDB";
