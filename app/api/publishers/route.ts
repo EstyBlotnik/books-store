@@ -1,14 +1,14 @@
 // app/api/categories/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import Category from "../../lib/models/categorySchema"; // ודא שהנתיב נכון
 import connect from "@/app/lib/db/mongoDB";
+import Publisher from "@/app/lib/models/publisherSchema";
 
 export async function GET() {
   connect();
   try {
-    const categories = await Category.find();
+    const publishers = await Publisher.find();
 
-    return NextResponse.json(categories);
+    return NextResponse.json(publishers);
   } catch (error) {
     return NextResponse.error();
   }
@@ -17,21 +17,19 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   connect();
   try {
-    const { name, parentCategory } = await request.json();
+    const { name } = await request.json();
     console.log(name);
-    console.log(parentCategory);
-
-    if (!name || !parentCategory) {
+    if (!name ) {
       return NextResponse.json(
-        { error: "Both name and parentCategory are required." },
+        { error: "name is required." },
         { status: 400 }
       );
     }
 
-    const newCategory = new Category({ name, parentCategory });
-    await newCategory.save();
+    const newPublisher = new Publisher({ name });
+    await newPublisher.save();
 
-    return NextResponse.json(newCategory, { status: 201 });
+    return NextResponse.json(newPublisher, { status: 201 });
   } catch (error) {
     console.log(error);
 

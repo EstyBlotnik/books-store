@@ -7,8 +7,7 @@ export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
     console.log(data);
-    
-    // Validate required fields
+
     if (
       !data.tytle ||
       !data.condition ||
@@ -24,18 +23,13 @@ export async function POST(req: NextRequest) {
 
     // Create a new book
     const newBook = new Book({
-      tytle: data.tytle,
-      condition: data.condition,
-      price: data.price,
-      categories: data.categories,
-      stock: data.stock,
+      ...data,
       sold: 0,
       views: 0,
     });
 
-    // Save to the database
     const savedBook = await newBook.save();
-    console.log("saved book:", savedBook)
+    console.log("saved book:", savedBook);
     return NextResponse.json(savedBook, { status: 201 });
   } catch (error) {
     console.error(error);

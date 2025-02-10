@@ -1,4 +1,3 @@
-// services/categoryService.ts
 import axios from "axios";
 
 export const getCategories = async () => {

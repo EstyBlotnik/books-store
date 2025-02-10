@@ -6,6 +6,15 @@ export const addBook = async (bookData: {
   price: number;
   categories: string[];
   stock: number;
+  author: string;
+  publisher: string | null;
+  coverType: string;
+  yearOfPublication: number;
+  description: string | null;
+  rare: boolean;
+  signed: boolean;
+  salePrice: number | null;
+  image: string | null;
 }) => {
   console.log(bookData);
   try {
