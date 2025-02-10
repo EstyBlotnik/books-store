@@ -13,7 +13,7 @@ const AddABook = () => {
     condition: string;
     price: string;
     categories: string[];
-    stock: string;
+    stock: number;
     author: string;
     publisher: string;
     coverType: string;
@@ -27,7 +27,7 @@ const AddABook = () => {
     condition: "",
     price: "",
     categories: [],
-    stock: "",
+    stock: 1,
     author: "",
     publisher: "",
     coverType: "כללי",
@@ -147,7 +147,7 @@ const AddABook = () => {
         tytle: formData.tytle,
         condition: formData.condition,
         price: parseFloat(formData.price),
-        stock: parseInt(formData.stock),
+        stock: formData.stock,
         categories: formData.categories,
         author: formData.author,
         publisher: formData.publisher || null,
