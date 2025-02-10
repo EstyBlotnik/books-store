@@ -1,6 +1,5 @@
 import axios from "axios";
-
-export const addBook = async (bookData: {
+interface bookData {
   tytle: string;
   condition: string;
   price: number;
@@ -15,7 +14,8 @@ export const addBook = async (bookData: {
   signed: boolean;
   salePrice: number | null;
   image: string | null;
-}) => {
+}
+export const addBook = async (bookData: bookData) => {
   console.log(bookData);
   try {
     const response = await axios.post("/api/book", {

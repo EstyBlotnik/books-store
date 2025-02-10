@@ -18,4 +18,4 @@ export default interface IBook extends Document {
   rare: boolean;
   signed: boolean;
   salePrice: number;
-}
+};
