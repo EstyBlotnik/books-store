@@ -55,7 +55,9 @@ const AddABook = () => {
         console.log(response);
         setCategories(response);
       } catch (err) {
-        setError("Failed to fetch categories.");
+        setError("Failed to fetch categories");
+        console.log(err);
+        
       }
     };
 
@@ -73,6 +75,8 @@ const AddABook = () => {
         setPublishers(response);
       } catch (err) {
         setError("Failed to fetch publishers.");
+        console.log(err);
+        
       }
     };
 
@@ -91,6 +95,8 @@ const AddABook = () => {
         setImageUrl(response.imageUrl);
       } catch (error) {
         setError("Failed to upload image.");
+        console.log(error);
+        
       }
     }
   };

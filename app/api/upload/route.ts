@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import cloudinary from "@/app/lib/cloudinaryConfig";
-import { CldOgImage } from "next-cloudinary";
 
 export async function POST(req: NextRequest) {
   try {
