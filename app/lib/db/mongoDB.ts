@@ -3,6 +3,8 @@ const MONGODB_URI = process.env.MONGODB_URI || "";
 let isConnected: boolean = false;
 
 const connect = async () => {
+  console.log("mongo uri:", MONGODB_URI);
+  
   if (isConnected) {
     console.log("already connected!");
     return;

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const addBook = async (bookData: {
-  name: string;
+  tytle: string;
   condition: string;
   price: number;
   categories: string[];

@@ -1,19 +1,19 @@
 "use client";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { addBook } from "../../services/bookService"; // Import the service
+import { getCategories } from "../../services/categoryService"; // Service for fetching categories
 
 const AddABook = () => {
   const router = useRouter();
-
   const [formData, setFormData] = useState<{
-    name: string;
+    tytle: string;
     condition: string;
     price: string;
     categories: string[];
     stock: string;
   }>({
-    name: "",
+    tytle: "",
     condition: "",
     price: "",
     categories: [],
@@ -21,6 +21,22 @@ const AddABook = () => {
   });
 
   const [error, setError] = useState("");
+  const [categories, setCategories] = useState<{ _id: string; name: string }[]>([]);
+
+  useEffect(() => {
+    // Fetch categories from the API
+    const fetchCategories = async () => {
+      try {
+        const response = await getCategories();
+        console.log(response);
+        setCategories(response);
+      } catch (err) {
+        setError("Failed to fetch categories.");
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -29,17 +45,14 @@ const AddABook = () => {
 
     if (name === "categories" && type === "checkbox") {
       const { checked } = e.target;
-      // אם התיבה נבדקה, נוסיף את הקטגוריה למערך, אם לא נבדקה, נסיר אותה
       const updatedCategories = checked
-        ? [...formData.categories, value] // הוספת הקטגוריה שנבחרה
-        : formData.categories.filter((category) => category !== value); // הסרת הקטגוריה אם לא נבחרה
-
+        ? [...formData.categories, value] 
+        : formData.categories.filter((category) => category !== value);
       setFormData({
         ...formData,
-        [name]: updatedCategories, // עדכון המערך עם הקטגוריות שנבחרו
+        [name]: updatedCategories, 
       });
     } else {
-      // עדכון שדות אחרים אם מדובר בשדה אחר
       setFormData({
         ...formData,
         [name]: value,
@@ -48,11 +61,12 @@ const AddABook = () => {
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    console.log("submitting");
     e.preventDefault();
     setError("");
     // Validate inputs
     if (
-      !formData.name ||
+      !formData.tytle ||
       !formData.condition ||
       !formData.price ||
       !formData.categories ||
@@ -65,7 +79,7 @@ const AddABook = () => {
     try {
       // Call the service function to add the book
       const response = await addBook({
-        name: formData.name,
+        tytle: formData.tytle,
         condition: formData.condition,
         price: parseFloat(formData.price),
         stock: parseInt(formData.stock),
@@ -88,7 +102,7 @@ const AddABook = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-lg p-8 bg-white shadow-lg rounded-lg">
         <h1 className="text-3xl font-semibold text-center mb-6">
-          Add a New Book
+          הוספת ספר חדש
         </h1>
 
         {error && <p className="text-red-600 text-center mb-4">{error}</p>}
@@ -96,13 +110,13 @@ const AddABook = () => {
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="name" className="block text-gray-700">
-              Book Name:
+              שם הספר:
             </label>
             <input
               type="text"
-              name="name"
+              name="tytle"
               id="name"
-              value={formData.name}
+              value={formData.tytle}
               onChange={handleInputChange}
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -110,7 +124,7 @@ const AddABook = () => {
 
           <div className="mb-4">
             <label htmlFor="condition" className="block text-gray-700">
-              Condition:
+              מצב הספר:
             </label>
             <select
               name="condition"
@@ -128,7 +142,7 @@ const AddABook = () => {
 
           <div className="mb-4">
             <label htmlFor="price" className="block text-gray-700">
-              Price:
+              מחיר:
             </label>
             <input
               type="number"
@@ -141,20 +155,19 @@ const AddABook = () => {
             />
           </div>
 
-          <div>
+          <div className="mb-4">
             <label>Categories:</label>
             <div>
-              {["Category1", "Category2", "Category3"].map((category) => (
-                <div key={category}>
+              {categories.map((category) => (
+                <div key={category._id}>
                   <input
                     type="checkbox"
-                    id={category}
                     name="categories"
-                    value={category}
-                    checked={formData.categories.includes(category)}
+                    value={category._id}
                     onChange={handleInputChange}
+                    checked={formData.categories.includes(category._id)}
                   />
-                  <label htmlFor={category}>{category}</label>
+                  <label htmlFor={category._id}>{category.name}</label>
                 </div>
               ))}
             </div>
@@ -162,7 +175,7 @@ const AddABook = () => {
 
           <div className="mb-4">
             <label htmlFor="stock" className="block text-gray-700">
-              Stock:
+              כמות במלאי:
             </label>
             <input
               type="number"
@@ -179,7 +192,7 @@ const AddABook = () => {
             type="submit"
             className="w-full p-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            Add Book
+            הוסף את הספר
           </button>
         </form>
       </div>
