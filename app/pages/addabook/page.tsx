@@ -30,7 +30,7 @@ const AddABook = () => {
     stock: "",
     author: "",
     publisher: "",
-    coverType: "",
+    coverType: "כללי",
     yearOfPublication: "",
     description: "",
     rare: false,
@@ -57,7 +57,6 @@ const AddABook = () => {
       } catch (err) {
         setError("Failed to fetch categories");
         console.log(err);
-        
       }
     };
 
@@ -76,7 +75,6 @@ const AddABook = () => {
       } catch (err) {
         setError("Failed to fetch publishers.");
         console.log(err);
-        
       }
     };
 
@@ -96,7 +94,6 @@ const AddABook = () => {
       } catch (error) {
         setError("Failed to upload image.");
         console.log(error);
-        
       }
     }
   };
@@ -162,9 +159,9 @@ const AddABook = () => {
         salePrice: formData.salePrice ? parseFloat(formData.salePrice) : null,
         image: imageUrl,
       });
-
-      if (response.status === 200) {
-        router.push("/books"); // Navigate to the books list after successful submission
+      console.log("response:", response);
+      if (response.status === 200 || response.status === 201) {
+        router.push("/pages/allbooks");
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -307,7 +304,7 @@ const AddABook = () => {
               onChange={handleInputChange}
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="">בחר סוג כריכה</option>
+              <option value="כללי">בחר סוג כריכה</option>
               <option value="רכה">רכה</option>
               <option value="קשה">קשה</option>
               <option value="קרטון">קרטון</option>

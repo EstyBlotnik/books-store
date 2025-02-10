@@ -11,11 +11,11 @@ export default interface IBook extends Document {
   views: number; // Number of views (default: 0)
   author: string;
   publisher: mongoose.Types.ObjectId;
-  coverType: "רכה" | "קשה" | "קרטון";
+  coverType: "רכה" | "קשה" | "קרטון" | "כללי";
   yearOfPublication: number;
   image: string;
   description: string;
   rare: boolean;
   signed: boolean;
   salePrice: number;
-};
+}

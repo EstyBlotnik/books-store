@@ -19,7 +19,7 @@ const BookSchema: Schema = new Schema({
   views: { type: Number, default: 0, min: 0 },
   author: { type: String },
   publisher: { type: Schema.Types.ObjectId, ref: "Publisher" },
-  coverType: { type: String, enum: ["רכה", "קשה", "קרטון"] },
+  coverType: { type: String, enum: ["רכה", "קשה", "קרטון","כללי"] },
   yearOfPublication: { type: Number },
   image: { type: String, required: false },
   description: { type: String, required: false },
