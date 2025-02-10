@@ -10,6 +10,7 @@ export async function GET() {
 
     return NextResponse.json(publishers);
   } catch (error) {
+    console.log(error);
     return NextResponse.error();
   }
 }
@@ -19,11 +20,8 @@ export async function POST(request: NextRequest) {
   try {
     const { name } = await request.json();
     console.log(name);
-    if (!name ) {
-      return NextResponse.json(
-        { error: "name is required." },
-        { status: 400 }
-      );
+    if (!name) {
+      return NextResponse.json({ error: "name is required." }, { status: 400 });
     }
 
     const newPublisher = new Publisher({ name });
