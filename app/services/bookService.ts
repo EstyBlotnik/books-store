@@ -1,5 +1,6 @@
 import axios from "axios";
-interface bookData {
+import IBook from "../types/IBook";
+export interface bookData {
   tytle: string;
   condition: string;
   price: number;
@@ -22,6 +23,19 @@ export const addBook = async (bookData: bookData) => {
       ...bookData,
     });
     return response;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.error || "Failed to add the book.");
+    }
+    throw new Error("An unknown error occurred");
+  }
+};
+
+export const getAllBooks = async (): Promise<IBook[]> => {
+  try {
+    const response = await axios.get("/api/book");
+    console.log("response from service: ", response)
+    return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       throw new Error(error.response?.data?.error || "Failed to add the book.");

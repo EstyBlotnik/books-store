@@ -39,3 +39,14 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export async function GET() {
+  connect();
+  try {
+    const books = await Book.find();
+    return NextResponse.json(books);
+  } catch (error) {
+    console.log(error);
+    return NextResponse.error();
+  }
+}
