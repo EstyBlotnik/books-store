@@ -10,7 +10,7 @@ import { bookSchema } from "@/app/types/IBook";
 const AddABook = () => {
   const router = useRouter();
   const [formData, setFormData] = useState<{
-    tytle: string;
+    title: string;
     condition: string;
     price: string;
     categories: string[];
