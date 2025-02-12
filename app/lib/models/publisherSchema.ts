@@ -1,5 +1,5 @@
 import { IPublisher } from "@/app/types/IPublisher";
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const PublisherSchema: Schema = new Schema({
   name: { type: String, required: true, unique: true, trim: true },

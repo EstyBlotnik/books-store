@@ -79,11 +79,19 @@ export default function BooksPage() {
               <p style={{ fontSize: "14px", color: "#555" }}>
                 <strong>קטגוריות:</strong>
               </p>
-              {book.categories.map((category) => (
-                <p style={{ fontSize: "14px", color: "#555" }}>
-                  {typeof category !== "string" && category?.name}
-                </p>
-              ))}
+              {Array.isArray(book.categories) &&
+                book.categories.every(
+                  (category) => typeof category !== "string"
+                ) &&
+                book.categories.map((category) => (
+                  <p
+                    key={category?.name}
+                    style={{ fontSize: "14px", color: "#555" }}
+                  >
+                    {category?.name}
+                  </p>
+                ))}
+
               {book.publisher && (
                 <p style={{ fontSize: "14px", color: "#555" }}>
                   <strong>הוצאה לאור:</strong>{" "}
