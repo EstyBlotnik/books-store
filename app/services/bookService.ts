@@ -1,7 +1,7 @@
 import axios from "axios";
 import IBook from "../types/IBook";
 export interface bookData {
-  tytle: string;
+  title: string;
   condition: string;
   price: number;
   categories: string[];

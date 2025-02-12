@@ -5,6 +5,7 @@ import { addBook } from "../../services/bookService"; // Import the service
 import { getCategories } from "../../services/categoryService"; // Service for fetching categories
 import { getPublishers } from "@/app/services/publisherService";
 import { uploadImage } from "@/app/services/uploadService";
+import { bookSchema } from "@/app/types/IBook";
 
 const AddABook = () => {
   const router = useRouter();
@@ -23,7 +24,7 @@ const AddABook = () => {
     signed: boolean;
     salePrice: string;
   }>({
-    tytle: "",
+    title: "",
     condition: "",
     price: "",
     categories: [],
@@ -126,25 +127,64 @@ const AddABook = () => {
     }
   };
 
+  // const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  //   console.log("submitting");
+  //   e.preventDefault();
+  //   setError("");
+  //   // Validate inputs
+  //   if (
+  //     !formData.tytle ||
+  //     !formData.condition ||
+  //     !formData.price ||
+  //     !formData.stock
+  //   ) {
+  //     setError("All fields are required.");
+  //     return;
+  //   }
+
+  //   try {
+  //     // Call the service function to add the book
+  //     const response = await addBook({
+  //       tytle: formData.tytle,
+  //       condition: formData.condition,
+  //       price: parseFloat(formData.price),
+  //       stock: formData.stock,
+  //       categories: formData.categories,
+  //       author: formData.author,
+  //       publisher: formData.publisher || null,
+  //       coverType: formData.coverType,
+  //       yearOfPublication: parseInt(formData.yearOfPublication),
+  //       description: formData.description || null,
+  //       rare: formData.rare,
+  //       signed: formData.signed,
+  //       salePrice: formData.salePrice ? parseFloat(formData.salePrice) : null,
+  //       image: imageUrl,
+  //     });
+  //     console.log("response:", response);
+  //     if (response.status === 200 || response.status === 201) {
+  //       router.push("/pages/allbooks");
+  //     }
+  //   } catch (error: unknown) {
+  //     if (error instanceof Error) {
+  //       setError(error.message);
+  //     } else {
+  //       setError("An unknown error occurred");
+  //     }
+  //   }
+  // };
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    console.log("submitting");
     e.preventDefault();
     setError("");
-    // Validate inputs
-    if (
-      !formData.tytle ||
-      !formData.condition ||
-      !formData.price ||
-      !formData.stock
-    ) {
-      setError("All fields are required.");
+
+    const validation = bookSchema.safeParse(formData);
+    if (!validation.success) {
+      setError(validation.error.errors.map((err) => err.message).join(", "));
       return;
     }
 
     try {
-      // Call the service function to add the book
       const response = await addBook({
-        tytle: formData.tytle,
+        title: formData.title,
         condition: formData.condition,
         price: parseFloat(formData.price),
         stock: formData.stock,
@@ -159,7 +199,7 @@ const AddABook = () => {
         salePrice: formData.salePrice ? parseFloat(formData.salePrice) : null,
         image: imageUrl,
       });
-      console.log("response:", response);
+
       if (response.status === 200 || response.status === 201) {
         router.push("/pages/allbooks");
       }
@@ -188,9 +228,9 @@ const AddABook = () => {
             </label>
             <input
               type="text"
-              name="tytle"
+              name="title"
               id="name"
-              value={formData.tytle}
+              value={formData.title}
               onChange={handleInputChange}
               className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -377,7 +417,7 @@ const AddABook = () => {
           </div>
           <input type="file" accept="image/*" onChange={handleImageUpload} />
           {imageUrl && <img src={imageUrl} alt="Book Cover" width="150" />}
-
+          {error && <p className="text-red-600 text-center mb-4">{error}</p>}
           <button
             type="submit"
             className="w-full p-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"

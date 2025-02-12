@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     console.log(data);
 
     if (
-      !data.tytle ||
+      !data.title ||
       !data.condition ||
       !data.price ||
       !data.categories ||

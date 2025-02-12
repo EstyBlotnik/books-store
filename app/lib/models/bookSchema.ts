@@ -2,7 +2,7 @@ import mongoose, { Schema, Model } from "mongoose";
 import IBook from "@/app/types/IBook";
 
 const BookSchema: Schema = new Schema({
-  tytle: { type: String, required: true },
+  title: { type: String, required: true },
   condition: { type: String, required: true, enum: ["כחדש", "טוב", "סביר"] },
   price: { type: Number, required: true, min: 0 },
   categories: {
