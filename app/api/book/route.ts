@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import Book from "@/app/lib/models/bookSchema";
 import connect from "@/app/lib/db/mongoDB";
+import Category from "@/app/lib/models/categorySchema";
+import Publisher from "@/app/lib/models/publisherSchema";
 
 export async function POST(req: NextRequest) {
   connect();
@@ -43,7 +45,12 @@ export async function POST(req: NextRequest) {
 export async function GET() {
   connect();
   try {
-    const books = await Book.find();
+    // await Category.find();
+    // await Publisher.find();
+    const books = await Book.find()
+      .populate("categories")
+      .populate("publisher");
+    console.log(books);
     return NextResponse.json(books);
   } catch (error) {
     console.log(error);

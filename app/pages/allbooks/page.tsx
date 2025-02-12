@@ -1,6 +1,7 @@
 "use client";
 import { getAllBooks } from "@/app/services/bookService";
 import IBook from "@/app/types/IBook";
+import mongoose from "mongoose";
 import { useState, useEffect } from "react";
 
 export default function BooksPage() {
@@ -11,6 +12,7 @@ export default function BooksPage() {
     async function fetchBooks() {
       try {
         const response = await getAllBooks();
+        console.log(response);
         setBooks(response);
       } catch (err) {
         setError("Failed to fetch books");
@@ -28,7 +30,7 @@ export default function BooksPage() {
     );
 
   return (
-    <div style={{ padding: "20px", direction:"rtl"}}>
+    <div style={{ padding: "20px", direction: "rtl" }}>
       <h2 style={{ textAlign: "center" }}>רשימת הספרים</h2>
       <div
         style={{
@@ -74,6 +76,22 @@ export default function BooksPage() {
               <p style={{ fontSize: "14px", color: "#555" }}>
                 <strong>מחיר:</strong> ₪{book.price}
               </p>
+              <p style={{ fontSize: "14px", color: "#555" }}>
+                <strong>קטגוריות:</strong>
+              </p>
+              {book.categories.map((category) => (
+                <p style={{ fontSize: "14px", color: "#555" }}>
+                  {typeof category !== "string" && category?.name}
+                </p>
+              ))}
+              {book.publisher && (
+                <p style={{ fontSize: "14px", color: "#555" }}>
+                  <strong>הוצאה לאור:</strong>{" "}
+                  {book.publisher instanceof mongoose.Types.ObjectId
+                    ? null
+                    : book.publisher.name}
+                </p>
+              )}
               {book.salePrice && (
                 <p style={{ fontSize: "14px", color: "red" }}>
                   <strong>מחיר במבצע:</strong> ₪{book.salePrice}
@@ -86,7 +104,7 @@ export default function BooksPage() {
                 <strong>סוג כריכה:</strong> {book.coverType}
               </p>
               <p style={{ fontSize: "14px", color: "#555" }}>
-                <strong>שנת פרסום:</strong> {book.yearOfPublication}
+                <strong>שנת הוצאה לאור:</strong> {book.yearOfPublication}
               </p>
               {book.description && (
                 <p style={{ fontSize: "14px", color: "#777" }}>

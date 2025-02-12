@@ -1,10 +1,5 @@
+import { ICategory } from "@/app/types/ICategory";
 import mongoose, { Schema, Model } from "mongoose";
-
-// ממשק עבור קטגוריה
-interface ICategory {
-  name: string;
-  parentCategory: "עיון" | "פרוזה" | "ילדים ונוער";
-}
 
 const CategorySchema: Schema = new Schema<ICategory>({
   name: { type: String, required: true, unique: true },
